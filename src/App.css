@@ -1,0 +1,358 @@
+/* =========================
+   Design Tokens / Theme
+   ========================= */
+:root {
+  /* Cores */
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --brand: #646cff;
+  --brand-600: #575ee6;
+  --success: #16a34a;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Tipografia e raio */
+  --font: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+  --radius: 14px;
+
+  /* Sombra e espaçamentos */
+  --shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1220;
+    --card: #121a2b;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --border: #1f2a44;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* =========================
+   Reset / Base
+   ========================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Melhor foco para acessibilidade */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Links */
+a {
+  color: var(--brand);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   Layout utilitário
+   ========================= */
+.container {
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.stack-sm > * + * {
+  margin-top: var(--space-2);
+}
+.stack-md > * + * {
+  margin-top: var(--space-4);
+}
+.stack-lg > * + * {
+  margin-top: var(--space-6);
+}
+
+/* Grid simples */
+.grid {
+  display: grid;
+  gap: var(--space-4);
+}
+.grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   Componentes
+   ========================= */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-6);
+  box-shadow: var(--shadow);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 40px;
+  padding: 0 var(--space-4);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.06s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.25);
+}
+.btn:hover {
+  background: var(--brand-600);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+  box-shadow: none;
+}
+.btn.danger {
+  background: var(--danger);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
+}
+.btn.success {
+  background: var(--success);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.25);
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  color: var(--text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px rgba(100, 108, 255, 0.15);
+}
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Badges / status */
+.badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--border);
+  background: rgba(100, 108, 255, 0.08);
+  color: var(--brand);
+}
+.badge.warn {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--warning);
+}
+.badge.ok {
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--success);
+}
+
+/* =========================
+   Cabeçalho simples
+   ========================= */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: saturate(180%) blur(16px);
+  background: color-mix(in oklab, var(--bg) 86%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+/* =========================
+   Área do app To-Do
+   ========================= */
+.app {
+  padding-block: var(--space-8);
+}
+.todo-bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-3);
+}
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.todo-item {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+}
+.todo-item + .todo-item {
+  margin-top: var(--space-2);
+}
+.todo-item.completed .todo-title {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.todo-actions {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+/* Checkbox custom básico */
+.checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  display: grid;
+  place-items: center;
+  background: var(--card);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.checkbox:checked {
+  border-color: var(--brand);
+  background: var(--brand);
+}
+.checkbox:checked::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: #fff;
+}
+
+/* =========================
+   Compat com estilos gerados pelo Vite template
+   ========================= */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4);
+  text-align: left; /* melhor legibilidade para app */
+}
+
+/* Logo original do template, com melhorias sutis */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter, transform;
+  transition: filter 300ms, transform 200ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em rgba(100, 108, 255, 0.66));
+  transform: translateY(-2px);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em rgba(97, 218, 251, 0.66));
+}
+
+/* Animação da logo (mantida) */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Tipos secundários */
+.small {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* Espaçadores utilitários */
+.mt-2 {
+  margin-top: var(--space-2);
+}
+.mt-4 {
+  margin-top: var(--space-4);
+}
+.mt-6 {
+  margin-top: var(--space-6);
+}
+
+/* Texto do template */
+.read-the-docs {
+  color: var(--muted);
+}
