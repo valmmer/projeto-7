@@ -67,7 +67,7 @@ export default function TaskList({
   }
 
   return (
-    <ul className="mt-6 space -y-3">
+    <ul className="mt-6 space-y-3">
       {localTasks.map((task) => (
         <TaskItem
           key={task.id}
