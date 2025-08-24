@@ -1,3 +1,12 @@
 @import "tailwindcss";
 
 /* Só o fundo da página muda; os itens do app ficam sempre claros */
+/* Esconde a barra de rolagem mas mantém a funcionalidade */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE e Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari e Opera */
+}
