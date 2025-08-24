@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Título e descrição -->
-    <title>Lista de Tarefas</title>
+    <title style="text-align: center;">Lista de Tarefas</title>
     <meta
       name="description"
       content="Aplicação Lista de Tarefas em React + Vite + TypeScript."
@@ -13,7 +13,23 @@
 
     <!-- Ícone -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  </head>
+  <script>
+  /* no-flash theme */
+  (function() {
+    try {
+      var key = 'theme-preference';
+      var saved = localStorage.getItem(key);
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

@@ -7,61 +7,73 @@ export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
-  // Determina o tema inicial apenas no cliente
+  // 1) ler preferência (ou sistema) só no cliente
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    const systemDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    setTheme(saved ?? (systemDark ? "dark" : "light"));
-    setMounted(true);
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initial: Theme =
+        saved === "dark" || saved === "light"
+          ? (saved as Theme)
+          : prefersDark
+          ? "dark"
+          : "light";
+      setTheme(initial);
+    } catch {
+      setTheme("light");
+    } finally {
+      setMounted(true);
+    }
   }, []);
 
-  // Aplica a classe .dark no <html> e salva preferência
+  // 2) aplicar/remover classe e persistir (somente após mounted)
   useEffect(() => {
     if (!mounted) return;
-
     const root = document.documentElement;
-
-    // Adiciona transição suave
-    root.classList.add("theme-transition");
-    root.style.setProperty("color-scheme", theme);
-
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-
-    localStorage.setItem(STORAGE_KEY, theme);
-
-    // Remove a classe de transição após a animação
-    const timeoutId = setTimeout(() => {
-      root.classList.remove("theme-transition");
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
+    if (theme === "dark") root.classList.add("dark");
+    else root.classList.remove("dark");
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch {}
   }, [theme, mounted]);
 
-  // Evita renderização até determinar o tema (previne flicker)
+  // 3) sincronizar com outras abas
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY) {
+        setTheme(e.newValue === "dark" ? "dark" : "light");
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
   if (!mounted) {
+    // placeholder estável até terminar a leitura
     return (
-      <div className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm font-medium shadow-sm dark:border-gray-700 dark:bg-neutral-800">
-        <span className="opacity-0">🌙</span>
-      </div>
+      <button
+        type="button"
+        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-sm text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800"
+        aria-hidden="true"
+        tabIndex={-1}
+        disabled
+      >
+        <span>🌗</span>
+        <span>Tema</span>
+      </button>
     );
   }
+
+  const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
     <button
       type="button"
-      onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+      onClick={toggle}
       aria-pressed={theme === "dark"}
-      className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-neutral-800 dark:text-gray-100 dark:hover:bg-neutral-700"
-      aria-label={
-        theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"
-      }
+      aria-label={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
       title={theme === "dark" ? "Mudar para claro" : "Mudar para escuro"}
+      className="inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-sm text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition"
     >
       <span aria-hidden="true">{theme === "dark" ? "☀️" : "🌙"}</span>
       <span>{theme === "dark" ? "Claro" : "Escuro"}</span>
