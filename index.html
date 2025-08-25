@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Título e descrição -->
+    <title style="text-align: center;">Lista de Tarefas</title>
+    <meta
+      name="description"
+      content="Aplicação Lista de Tarefas em React + Vite + TypeScript."
+    />
+
+    <!-- Ícone -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <script>
+  /* no-flash theme */
+  (function() {
+    try {
+      var key = 'theme-preference';
+      var saved = localStorage.getItem(key);
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script type="module" crossorigin src="/assets/index-C4z6AlCr.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CVj2zLzr.css">
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
